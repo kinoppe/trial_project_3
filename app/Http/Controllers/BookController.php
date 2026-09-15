@@ -24,7 +24,7 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        // 後でバリデーションと登録処理を実装
+        
     }
 
     
