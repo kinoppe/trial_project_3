@@ -67,6 +67,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle'])
         ->name('reviews.like');
+
+    Route::resource('genres', GenreController::class);
 });
 
 Route::get('/books/{book}', [BookController::class, 'show'])
