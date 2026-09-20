@@ -9,6 +9,19 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+
+                <!-- @if ($errors->any())
+                    <div class="mb-4 rounded bg-red-100 p-4 text-red-700">
+                        <p>入力内容を確認してください。</p>
+
+                        <ul class="list-disc pl-5">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif -->
+
                     <form action="{{ route('books.store') }}" method="POST" novalidate>
                         @include('books._form')
 
