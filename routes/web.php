@@ -25,6 +25,9 @@ Route::get('/', [BookController::class, 'index'])
 Route::get('/books', [BookController::class, 'index'])
     ->name('books.index');
 
+Route::get('/ranking', [RankingController::class, 'index'])
+        ->name('ranking.index');
+
 Route::middleware('auth')->group(function () {
     Route::get('/books/create', [BookController::class, 'create'])
         ->name('books.create');
@@ -41,8 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/books/{book}', [BookController::class, 'destroy'])
         ->name('books.destroy');
 
-    Route::get('/ranking', [RankingController::class, 'index'])
-        ->name('ranking.index');
+    
 
     Route::get('/favorites', [FavoriteController::class, 'index'])
         ->name('favorites.index');
