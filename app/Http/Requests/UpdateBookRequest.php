@@ -25,63 +25,47 @@ class UpdateBookRequest extends FormRequest
         $book = $this->route('book');
 
         return [
-            'title' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-            'author' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-            'isbn' => [
-                'required',
-                'string',
-                'max:20',
-                Rule::unique('books', 'isbn')->ignore($book),
-            ],
-            'published_date' => [
-                'required',
-                'date',
-            ],
-            'description' => [
-                'nullable',
-                'string',
-                'max:2000',
-            ],
-            'image_url' => [
-                'nullable',
-                'url',
-                'max:2048',
-            ],
-            'genres' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-            'genres.*' => [
-                'integer',
-                'distinct',
-                'exists:genres,id',
-            ],
+            'title' => ['required','string','max:255',],
+
+            'author' => ['required','string','max:255',],
+
+            'isbn' => ['string','max:13',Rule::unique('books', 'isbn')->ignore($book),],
+
+            'published_date' => ['date',],
+
+            'description' => ['nullable','string',],
+
+            'image_url' => ['nullable','url','max:255',],
+
+            'genres' => ['required','array',],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'title.required' => 'タイトルを入力してください。',
-            'author.required' => '著者名を入力してください。',
+            'title.required' => '書籍タイトルは必須です。',
+            'title.string' => '書籍タイトルは文字列で入力してください。',
+            'title.max' => '書籍タイトルは255文字以内で入力してください。',
+
+            'author.required' => '著者名は必須です。',
+            'author.string' => '著者名は文字列で入力してください。',
+            'author.max' => '著者名は255文字以内で入力してください。',
+
             'isbn.required' => 'ISBNを入力してください。',
-            'isbn.unique' => 'このISBNはすでに使用されています。',
-            'published_date.required' => '出版日を入力してください。',
-            'published_date.date' => '出版日を正しく入力してください。',
-            'image_url.url' => '画像URLを正しく入力してください。',
-            'genres.required' => 'ジャンルを選択してください。',
+            'isbn.string' => 'ISBNは文字列で入力してください。',
+            'isbn.max' => 'ISBNは13桁で入力してください。',
+            'isbn.unique' => 'このISBNはすでに登録されています。',
+
+            'published_date.date' => '出版日は有効な日付形式で入力してください。',
+
+            'description.string' => '説明は文字列で入力してください。',
+
+            'image_url.url' => '画像URLは有効なURL形式で入力してください。',
+            'image_url.max' => '画像URLは255文字以内で入力してください。',
+
+            'genres.required' => 'ジャンルは1つ以上選択してください。',
             'genres.array' => 'ジャンルの指定が正しくありません。',
-            'genres.min' => 'ジャンルを1つ以上選択してください。',
-            'genres.*.exists' => '選択されたジャンルは存在しません。',
         ];
     }
 }

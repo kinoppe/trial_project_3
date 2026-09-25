@@ -7,6 +7,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewLikeController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,9 @@ Route::middleware('auth')->group(function () {
         ->name('reviews.like');
 
     Route::resource('genres', GenreController::class);
+
+    Route::get('/reports', [ReportController::class, 'index'])
+        ->name('reports.index');
 });
 
 Route::get('/books/{book}', [BookController::class, 'show'])

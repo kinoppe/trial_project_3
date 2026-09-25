@@ -61,7 +61,7 @@ class GenreController extends Controller
                 ->route('genres.index')
                 ->with(
                     'error',
-                    '書籍が登録されているジャンルは削除できません。'
+                    'このジャンルには書籍が紐づいているため削除できません。'
                 );
         }
 
