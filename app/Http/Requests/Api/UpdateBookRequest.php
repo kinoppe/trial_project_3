@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreBookRequest extends FormRequest
+class UpdateBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +22,16 @@ class StoreBookRequest extends FormRequest
      */
     public function rules(): array
     {
+        $book = $this->route('book');
+
         return [
             'title' => ['required','string','max:255',],
 
             'author' => ['required','string','max:255',],
 
-            'isbn' => ['required','string','max:13','unique:books,isbn',],
+            'isbn' => ['string','max:13',Rule::unique('books', 'isbn')->ignore($book),],
 
-            'published_date' => ['nullable', 'date'],
+            'published_date' => ['nullable','date',],
 
             'description' => ['nullable','string',],
 
@@ -63,20 +66,6 @@ class StoreBookRequest extends FormRequest
 
             'genres.required' => 'ジャンルは1つ以上選択してください。',
             'genres.array' => 'ジャンルの指定が正しくありません。',
-        ];
-    }
-
-    public function attributes(): array
-    {
-        return [
-            'title' => '書籍タイトル',
-            'author' => '著者名',
-            'isbn' => 'ISBN',
-            'published_date' => '出版日',
-            'description' => '説明',
-            'image_url' => '画像URL',
-            'genres' => 'ジャンル',
-            'genres.*' => 'ジャンル',
         ];
     }
 }

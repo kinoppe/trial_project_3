@@ -21,6 +21,10 @@ class Book extends Model
         'image_url',
     ];
 
+    protected $casts = [
+        'published_date' => 'date',
+    ];
+
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class)
@@ -35,5 +39,20 @@ class Book extends Model
     public function favoritedUsers()
     {
         return $this->belongsToMany(User::class, 'favorites');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

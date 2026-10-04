@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('review_likes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
-            ->constrained()
-            ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->foreignId('review_id')
                 ->constrained()

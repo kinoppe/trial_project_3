@@ -18,7 +18,7 @@ class Review extends Model
         'comment',
     ];
 
-    public function likedUsers(): BelongsToMany
+    public function likedByUsers(): BelongsToMany
     {
         return $this->belongsToMany(
             User::class,

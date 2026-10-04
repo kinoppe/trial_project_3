@@ -11,14 +11,66 @@ use App\Http\Requests\UpdateBookRequest;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('genres')
-            ->withAvg('reviews', 'rating')
-            ->latest()
-            ->paginate(10);
+        $keyword = $request->input('keyword');
+        $genreId = $request->input('genre');
+        $sort = $request->input('sort', 'latest');
 
-        return view('books.index', compact('books'));
+        if (! in_array($sort, ['latest', 'oldest', 'title', 'rating'], true)) {
+            $sort = 'latest';
+        }
+
+        $books = Book::query()
+            ->with('genres')
+            ->withAvg('reviews', 'rating')
+            ->when($keyword, function ($query, $keyword) {
+                $query->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', '%' . $keyword . '%')
+                        ->orWhere('author', 'like', '%' . $keyword . '%');
+                });
+            })
+            ->when($genreId, function ($query, $genreId) {
+                $query->whereHas('genres', function ($query) use ($genreId) {
+                    $query->where('genres.id', $genreId);
+                });
+            });
+
+        switch ($sort) {
+            case 'oldest':
+                $books->oldest();
+                break;
+
+            case 'title':
+                $books->orderBy('title');
+                break;
+
+            case 'rating':
+                // レビューなし（平均評価がNULL）の書籍を最後に表示
+                $books->orderByRaw('reviews_avg_rating IS NULL')
+                    ->orderByDesc('reviews_avg_rating')
+                    ->latest('books.created_at');
+                break;
+
+            case 'latest':
+            default:
+                $books->latest();
+                break;
+        }
+
+        $books = $books
+            ->paginate(10)
+            ->withQueryString();
+
+        $genres = Genre::orderBy('name')->get();
+
+        return view('books.index', compact(
+            'books',
+            'genres',
+            'keyword',
+            'genreId',
+            'sort'
+        ));
     }
 
     public function create()
@@ -39,7 +91,7 @@ class BookController extends Controller
                 'published_date' => $validated['published_date'] ?? null,
                 'description'  => $validated['description'] ?? null,
                 'image_url'    => $validated['image_url'] ?? null,
-                'user_id'   => auth()->id(),
+                'user_id'   => $request->user()->id,
             ]);
 
             $book->genres()->sync($validated['genres']);
