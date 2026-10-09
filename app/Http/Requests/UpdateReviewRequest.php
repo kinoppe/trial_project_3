@@ -22,19 +22,21 @@ class UpdateReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rating' => ['required','integer','between:1,5',],
-            'comment' => ['required','string','max:1000',],
+            'rating' => ['required', 'integer', 'max:5'],
+            'comment' => ['required', 'string', 'max:1000'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'rating.required' => '評価を選択してください。',
-            'rating.integer' => '評価を正しく選択してください。',
-            'rating.between' => '評価は1から5で選択してください。',
-            'comment.required' => 'レビューを入力してください。',
-            'comment.max' => 'レビューは1000文字以内で入力してください。',
+            'rating.required' => '評価は必須です。',
+            'rating.integer' => '評価は整数で指定してください。',
+            'rating.max' => '評価は1から5の整数で入力してください。',
+
+            'comment.required' => 'コメントは必須です。',
+            'comment.string' => 'コメントは文字列で入力してください。',
+            'comment.max' => 'コメントは1000文字以内で入力してください。',
         ];
     }
 }

@@ -28,13 +28,13 @@ class StoreBookRequest extends FormRequest
 
             'isbn' => ['required','string','max:13','unique:books,isbn',],
 
-            'published_date' => ['nullable', 'date'],
+            'published_date' => ['required', 'date'],
 
             'description' => ['nullable','string',],
 
             'image_url' => ['nullable','url','max:255',],
 
-            'genres' => ['required','array',],
+            'genres' => ['required','array','min:1'],
         ];
     }
 
@@ -54,6 +54,7 @@ class StoreBookRequest extends FormRequest
             'isbn.max' => 'ISBNは13桁で入力してください。',
             'isbn.unique' => 'このISBNはすでに登録されています。',
 
+            'published_date.required' => '出版日は必須です。',
             'published_date.date' => '出版日は有効な日付形式で入力してください。',
 
             'description.string' => '説明は文字列で入力してください。',

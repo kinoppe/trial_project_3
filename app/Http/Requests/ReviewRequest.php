@@ -32,7 +32,7 @@ class ReviewRequest extends FormRequest
         return [
             'rating.required' => '評価は必須です。',
             'rating.integer' => '評価は整数で指定してください。',
-            'rating.between' => '評価は1から5の整数で入力してください。',
+            'rating.max' => '評価は1から5の整数で入力してください。',
 
             'comment.required' => 'コメントは必須です。',
             'comment.string' => 'コメントは文字列で入力してください。',

@@ -46,7 +46,6 @@ class BookController extends Controller
                 break;
 
             case 'rating':
-                // レビューなし（平均評価がNULL）の書籍を最後に表示
                 $books->orderByRaw('reviews_avg_rating IS NULL')
                     ->orderByDesc('reviews_avg_rating')
                     ->latest('books.created_at');
@@ -161,7 +160,7 @@ class BookController extends Controller
 
         return redirect()
             ->route('books.show', $book)
-            ->with('success', '書籍情報を更新しました。');
+            ->with('success', '書籍を更新しました。');
     }
 
     public function destroy(Book $book)
