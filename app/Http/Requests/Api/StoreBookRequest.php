@@ -22,6 +22,8 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required','exists:users,id',],
+
             'title' => ['required','string','max:255',],
 
             'author' => ['required','string','max:255',],
@@ -41,6 +43,9 @@ class StoreBookRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'user_id.required' => '登録者IDは必須です。',
+            'user_id.exists' => '指定された登録者は存在しません。',
+
             'title.required' => '書籍タイトルは必須です。',
             'title.string' => '書籍タイトルは文字列で入力してください。',
             'title.max' => '書籍タイトルは255文字以内で入力してください。',
@@ -49,7 +54,7 @@ class StoreBookRequest extends FormRequest
             'author.string' => '著者名は文字列で入力してください。',
             'author.max' => '著者名は255文字以内で入力してください。',
 
-            'isbn.required' => 'ISBNを入力してください。',
+            'isbn.required' => 'ISBNは必須です。',
             'isbn.string' => 'ISBNは文字列で入力してください。',
             'isbn.max' => 'ISBNは13桁で入力してください。',
             'isbn.unique' => 'このISBNはすでに登録されています。',
@@ -62,7 +67,8 @@ class StoreBookRequest extends FormRequest
             'image_url.url' => '画像URLは有効なURL形式で入力してください。',
             'image_url.max' => '画像URLは255文字以内で入力してください。',
 
-            'genres.required' => 'ジャンルは1つ以上選択してください。',
+            'genres.required' => 'ジャンルは必須です。',
+            'genres.min' => 'ジャンルは1つ以上選択してください。',
             'genres.array' => 'ジャンルの指定が正しくありません。',
         ];
     }

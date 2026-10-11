@@ -89,9 +89,7 @@ class ReadingPlanController extends Controller
         return back()->with('success', '読了として記録しました。');
     }
 
-    public function destroy(
-        ReadingPlan $readingPlan
-    ): RedirectResponse {
+    public function destroy(ReadingPlan $readingPlan): RedirectResponse {
         $this->authorize('delete', $readingPlan);
 
         $readingPlan->delete();
