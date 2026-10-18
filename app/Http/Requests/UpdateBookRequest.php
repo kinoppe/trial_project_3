@@ -29,15 +29,15 @@ class UpdateBookRequest extends FormRequest
 
             'author' => ['required','string','max:255',],
 
-            'isbn' => ['required','string','max:13',Rule::unique('books', 'isbn')->ignore($book),],
+            'isbn' => ['required','string','size:13',Rule::unique('books', 'isbn')->ignore($book),],
 
-            'published_date' => ['date',],
+            'published_date' => ['nullable','date',],
 
             'description' => ['nullable','string',],
 
             'image_url' => ['nullable','url','max:255',],
 
-            'genres' => ['required','array',],
+            'genres' => ['required','array','min:1'],
         ];
     }
 

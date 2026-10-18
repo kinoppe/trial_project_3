@@ -82,7 +82,7 @@ class BookController extends Controller
     {
         $validated = $request->validated();
 
-        $book = DB::transaction(function () use ($validated) {
+        $book = DB::transaction(function () use ($validated, $request) {
             $book = Book::create([
                 'title'        => $validated['title'],
                 'author'       => $validated['author'],
@@ -150,7 +150,7 @@ class BookController extends Controller
                 'title'        => $validated['title'],
                 'author'       => $validated['author'],
                 'isbn'         => $validated['isbn'],
-                'published_date' => $validated['published_date'],
+                'published_date' => $validated['published_date'] ?? null,
                 'description'  => $validated['description'] ?? null,
                 'image_url'    => $validated['image_url'] ?? null,
             ]);

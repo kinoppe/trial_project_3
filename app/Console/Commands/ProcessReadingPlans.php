@@ -36,27 +36,27 @@ class ProcessReadingPlans extends Command
                 ->get();
 
             foreach ($plans as $plan) {
-                $dueDate = Carbon::parse($plan->due_date)->startOfDay();
+                $targetDate = Carbon::parse($plan->target_date)->startOfDay();
 
-                if ($dueDate->isSameDay($today->copy()->addDays(3))) {
+                if ($targetDate->isSameDay($today->copy()->addDays(3))) {
                     $plan->user->notify(
                         new ReadingPlanReminder($plan, 'three_days_before')
                     );
                 }
 
-                if ($dueDate->isSameDay($today)) {
+                if ($targetDate->isSameDay($today)) {
                     $plan->user->notify(
-                        new ReadingPlanReminder($plan, 'on_due_date')
+                        new ReadingPlanReminder($plan, 'on_target_date')
                     );
                 }
 
-                if ($dueDate->lt($today)) {
+                if ($targetDate->lt($today)) {
                     $plan->update([
                         'status' => 'overdue',
                     ]);
                 }
 
-                if ($dueDate->isSameDay($today->copy()->subDays(3))) {
+                if ($targetDate->isSameDay($today->copy()->subDays(3))) {
                     $plan->user->notify(
                         new ReadingPlanReminder($plan, 'three_days_after')
                     );

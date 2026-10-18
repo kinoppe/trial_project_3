@@ -73,7 +73,7 @@ class BookController extends Controller
                 'created_by' => $request->user()->id,
             ]);
 
-            $book->genres()->sync($validated['genre_ids'] ?? []);
+            $book->genres()->sync($validated['genres'] ?? []);
 
             return $book;
         });
@@ -103,7 +103,7 @@ class BookController extends Controller
                 'image_url' => $validated['image_url'] ?? null,
             ]);
 
-            $book->genres()->sync($validated['genre_ids'] ?? []);
+            $book->genres()->sync($validated['genres'] ?? []);
         });
 
         $book->refresh()

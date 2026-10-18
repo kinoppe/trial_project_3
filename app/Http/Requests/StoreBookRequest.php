@@ -26,7 +26,7 @@ class StoreBookRequest extends FormRequest
 
             'author' => ['required','string','max:255',],
 
-            'isbn' => ['required','string','max:13','unique:books,isbn',],
+            'isbn' => ['required','string','size:13','unique:books,isbn',],
 
             'published_date' => ['nullable', 'date'],
 
@@ -34,7 +34,7 @@ class StoreBookRequest extends FormRequest
 
             'image_url' => ['nullable','url','max:255',],
 
-            'genres' => ['required','array',],
+            'genres' => ['required','array','min:1'],
         ];
     }
 
