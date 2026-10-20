@@ -26,7 +26,7 @@ class UpdateGenreRequest extends FormRequest
 
         return [
             'name' => ['required','string','max:255',
-                    Rule::unique('genres', 'name')->ignore('genre'),
+                    Rule::unique('genres', 'name')->ignore($genre),
             ],
         ];
     }
