@@ -47,8 +47,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/books/{book}', [BookController::class, 'destroy'])
         ->name('books.destroy');
 
-    
-
     Route::get('/favorites', [FavoriteController::class, 'index'])
         ->name('favorites.index');
 

@@ -1,66 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BookShelf 書籍レビューアプリ
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Laravel 環境構築
 
-## About Laravel
+1. リポジトリのクローン
+git clone <https://github.com/kinoppe/trial_project_3.git>
+cd bookshelf-app
+2. 環境変数を適宜変更
+cp .env.example .env ,
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+3. docker run --rm \-u "$(id -u):$(id -g)" \-v "$(pwd):/var/www/html" \-w /var/www/html \
+laravelsail/php82-composer:latest \
+composer install
+4. ./vendor/bin/sail up -d
+5. ./vendor/bin/sail artisan key:generate
+6. ./vendor/bin/sail artisan migrate --seed
+データベースを初期化する場合は以下を実行
+./vendor/bin/sail artisan migrate:fresh --seed
+7. ./vendor/bin/sail npm install
+8. ./vendor/bin/sail npm run dev
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## API仕様
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* 書籍一覧取得
+GET /api/v1/books
+認証不要
+* 書籍詳細取得
+GET /api/v1/books/{book}
+認証不要
+* 書籍新規登録
+POST /api/v1/books
+Sanctum認証必須
+* 書籍情報更新
+PUT /api/v1/books/{book}
+Sanctum認証必須、認可必須
+* 書籍削除
+DELETE /api/v1/books/{book}
+Sanctum認証必須、認可必須
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+API認証
+* Authorization: Bearer APIトークンを設定
+* Accept: application/json
+* Content-Type: application/json
 
-## Learning Laravel
+## テストケース
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+全てのテスト実行
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+./vendor/bin/sail artisan test
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Unitテスト実行
 
-## Laravel Sponsors
+./vendor/bin/sail artisan test tests/Unit
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Featureテストのみ実行
 
-### Premium Partners
+./vendor/bin/sail artisan test tests/Feature
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+特定ファイルを実行する場合はテストファイルパスを指定
 
-## Contributing
+./vendor/bin/sail artisan test tests/Feature/Book/BookIndexTest.php
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+テストカバレッジ
 
-## Code of Conduct
+./vendor/bin/sail artisan test --coverage
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 使用技術
 
-## Security Vulnerabilities
+* PHP： 8.5
+* Laravel： 10.x
+* DB：MySQL 8.4
+* フロントエンド：Vite, Tailwind CSS ^3.4.0, @tailwindcss/forms
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## ER図
 
-## License
+<img src="README-image/勤怠管理ER図.jpg">
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## URL
+
+開発環境
+* 会員登録画面：http://localhost/register
+* ログイン画面：http://localhost/login
+* 書籍一覧画面：http://localhost/books
+* 書籍詳細画面：http://localhost/books{book}
+* 書籍登録：http://localhost/books/create
+* 書籍ランキング：http://localhost/ranking
+* お気に入り一覧：http://localhost/favorite
+* ジャンル管理：http://localhost/genres
+* マイレポート：http://localhost/report
+* 読書計画：http://localhost/reading-plans
+* 通知一覧：http://localhost/notifications
+* phpMyAdmin：http://localhost:8080/
+
+## ログイン情報
+
+./vendor/bin/sail artisan migrate --seed実行時のダミーデータ
+
+* 山田太郎： メールアドレス / パスワード
+yamada@example.com / password
+* 鈴木花子： メールアドレス / パスワード
+suzuki@example.com / password
+* 田中一郎： メールアドレス / パスワード
+tanaka@example.com / password
+* 佐藤美咲： メールアドレス / パスワード
+sato@example.com / password
+* 高橋健太： メールアドレス / パスワード
+takahashi@example.com / password
