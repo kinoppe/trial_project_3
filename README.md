@@ -80,7 +80,7 @@ Featureテストのみ実行
 
 ## ER図
 
-<img src="README-image/勤怠管理ER図.jpg">
+<img src="README-image/BookShelf_ER図.jpg">
 
 ## URL
 
