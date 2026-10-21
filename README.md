@@ -112,3 +112,6 @@ tanaka@example.com / password
 sato@example.com / password
 * 高橋健太： メールアドレス / パスワード
 takahashi@example.com / password
+
+## 作成者
+木下　悠哉
