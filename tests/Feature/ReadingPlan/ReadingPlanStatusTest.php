@@ -52,7 +52,7 @@ class ReadingPlanStatusTest extends TestCase
             route('reading-plans.complete', $readingPlan)
         );
 
-        $response->assertSessionHas('success', '読了として記録しました。');
+        $response->assertSessionHas('success', '読書計画を完了しました。');
 
         $this->assertDatabaseHas('reading_plans', [
             'id' => $readingPlan->id,

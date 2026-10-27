@@ -53,9 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/books/{book}/favorites', [FavoriteController::class, 'toggle'])
         ->name('favorites.toggle');
 
-    Route::get('/genres', [GenreController::class, 'index'])
-        ->name('genres.index');
-
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])
         ->name('reviews.store');
 

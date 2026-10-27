@@ -28,42 +28,40 @@ class ProcessReadingPlans extends Command
      */
     public function handle()
     {
-        {
-            $today = Carbon::today();
+        $today = Carbon::today();
 
-            $plans = ReadingPlan::with(['user', 'book'])
-                ->where('status', '!=', 'completed')
-                ->get();
+        $plans = ReadingPlan::with(['user', 'book'])
+            ->where('status', '!=', 'completed')
+            ->get();
 
-            foreach ($plans as $plan) {
-                $targetDate = Carbon::parse($plan->target_date)->startOfDay();
+        foreach ($plans as $plan) {
+            $targetDate = Carbon::parse($plan->target_date)->startOfDay();
 
-                if ($targetDate->isSameDay($today->copy()->addDays(3))) {
-                    $plan->user->notify(
-                        new ReadingPlanReminder($plan, 'three_days_before')
-                    );
-                }
-
-                if ($targetDate->isSameDay($today)) {
-                    $plan->user->notify(
-                        new ReadingPlanReminder($plan, 'on_target_date')
-                    );
-                }
-
-                if ($targetDate->lt($today)) {
-                    $plan->update([
-                        'status' => 'overdue',
-                    ]);
-                }
-
-                if ($targetDate->isSameDay($today->copy()->subDays(3))) {
-                    $plan->user->notify(
-                        new ReadingPlanReminder($plan, 'three_days_after')
-                    );
-                }
+            if ($targetDate->isSameDay($today->copy()->addDays(3))) {
+                $plan->user->notify(
+                    new ReadingPlanReminder($plan, 'three_days_before')
+                );
             }
 
-            return Command::SUCCESS;
+            if ($targetDate->isSameDay($today)) {
+                $plan->user->notify(
+                    new ReadingPlanReminder($plan, 'on_target_date')
+                );
+            }
+
+            if ($targetDate->lt($today)) {
+                $plan->update([
+                    'status' => 'overdue',
+                ]);
+            }
+
+            if ($targetDate->isSameDay($today->copy()->subDays(3))) {
+                $plan->user->notify(
+                    new ReadingPlanReminder($plan, 'three_days_after')
+                );
+            }
         }
+
+        return Command::SUCCESS;
     }
 }

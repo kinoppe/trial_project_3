@@ -34,22 +34,22 @@ class ReviewTest extends TestCase
 
         $this->assertInstanceOf(
             BelongsToMany::class,
-            $review->likedByUsers()
+            $review->likedUsers()
         );
 
         $this->assertEquals(
             'review_likes',
-            $review->likedByUsers()->getTable()
+            $review->likedUsers()->getTable()
         );
 
         $this->assertEquals(
             'review_id',
-            $review->likedByUsers()->getForeignPivotKeyName()
+            $review->likedUsers()->getForeignPivotKeyName()
         );
 
         $this->assertEquals(
             'user_id',
-            $review->likedByUsers()->getRelatedPivotKeyName()
+            $review->likedUsers()->getRelatedPivotKeyName()
         );
     }
 

@@ -36,7 +36,7 @@
                                         'iconColor' => $isUnread ? 'text-blue-600' : 'text-gray-400',
                                         'icon' => 'calendar',
                                     ],
-                                    'on_due_date' => [
+                                    'on_target_date' => [
                                         'border' => 'bg-yellow-500',
                                         'iconBg' => $isUnread ? 'bg-yellow-100' : 'bg-gray-100',
                                         'iconColor' => $isUnread ? 'text-yellow-700' : 'text-gray-400',

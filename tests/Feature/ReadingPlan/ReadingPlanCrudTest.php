@@ -51,7 +51,7 @@ class ReadingPlanCrudTest extends TestCase
         );
 
         $response->assertRedirect(route('reading-plans.index'));
-        $response->assertSessionHas('success', '読書計画を登録しました。');
+        $response->assertSessionHas('success', '読書計画を作成しました。');
 
         $this->assertDatabaseHas('reading_plans', [
             'user_id' => $user->id,

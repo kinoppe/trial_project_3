@@ -11,7 +11,7 @@ class BookSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::first();
+        $user = User::all();
 
         if (!$user) {
             throw new \RuntimeException(
@@ -117,7 +117,7 @@ class BookSeeder extends Seeder
             $book = Book::firstOrCreate(
                 ['isbn' => $bookData['isbn']],
                 array_merge($bookData, [
-                    'user_id' => $user->id,
+                    'user_id' => $user->random()->id,
                     'image_url' => sprintf(
                         'https://placehold.co/200x300/e2e8f0/475569?text=%d',
                         $index + 1

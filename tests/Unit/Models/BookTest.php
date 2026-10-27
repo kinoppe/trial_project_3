@@ -40,16 +40,6 @@ class BookTest extends TestCase
         );
     }
 
-    // public function test_book_has_favorites_relation(): void
-    // {
-    //     $book = new Book();
-
-    //     $this->assertInstanceOf(
-    //         HasMany::class,
-    //         $book->favorites()
-    //     );
-    // }
-
     public function test_book_belongs_to_user(): void
     {
         $book = new Book();

@@ -67,13 +67,13 @@ class ReadingPlanReminderTest extends TestCase
         );
     }
 
-    public function test_notification_on_due_date(): void
+    public function test_notification_on_target_date(): void
     {
         $plan = $this->createReadingPlan();
 
         $notification = new ReadingPlanReminder(
             $plan,
-            'on_due_date'
+            'on_target_date'
         );
 
         $data = $notification->toDatabase($plan->user);
@@ -89,7 +89,7 @@ class ReadingPlanReminderTest extends TestCase
         );
 
         $this->assertEquals(
-            'on_due_date',
+            'on_target_date',
             $data['timing']
         );
     }
@@ -149,7 +149,7 @@ class ReadingPlanReminderTest extends TestCase
 
         $notification = new ReadingPlanReminder(
             $plan,
-            'on_due_date'
+            'on_target_date'
         );
 
         $data = $notification->toDatabase($plan->user);
@@ -166,7 +166,7 @@ class ReadingPlanReminderTest extends TestCase
 
         $notification = new ReadingPlanReminder(
             $plan,
-            'on_due_date'
+            'on_target_date'
         );
 
         $data = $notification->toDatabase($plan->user);
@@ -182,7 +182,7 @@ class ReadingPlanReminderTest extends TestCase
         $plan = $this->createReadingPlan();
 
         $plan->user->notify(
-            new ReadingPlanReminder($plan, 'on_due_date')
+            new ReadingPlanReminder($plan, 'on_target_date')
         );
 
         $this->assertDatabaseHas('notifications', [
@@ -211,7 +211,7 @@ class ReadingPlanReminderTest extends TestCase
         $otherUser = User::factory()->create();
 
         $plan->user->notify(
-            new ReadingPlanReminder($plan, 'on_due_date')
+            new ReadingPlanReminder($plan, 'on_target_date')
         );
 
         $this->assertEquals(

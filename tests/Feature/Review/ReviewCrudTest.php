@@ -86,16 +86,21 @@ class ReviewCrudTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $book = Book::factory()->create();
+
         $review = Review::factory()->create([
             'user_id' => $user->id,
+            'book_id' => $book->id,
         ]);
+
+        $this->withoutExceptionHandling();
 
         $response = $this->actingAs($user)->delete(
             route('reviews.destroy', $review)
         );
 
         $response->assertRedirect(
-            route('books.show', $review->book_id)
+            route('books.show', $book)
         );
 
         $response->assertSessionHas('success');

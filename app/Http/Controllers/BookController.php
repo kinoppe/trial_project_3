@@ -108,7 +108,7 @@ class BookController extends Controller
         $book->load([
             'genres',
             'reviews.user',
-            'reviews.likedByUsers',
+            'reviews.likedUsers',
         ]);
 
         $book->loadCount([
@@ -116,7 +116,7 @@ class BookController extends Controller
             'reviews',
         ]);
 
-        $book->reviews->loadCount('likedByUsers');
+        $book->reviews->loadCount('likedUsers');
 
         $isFavorite = auth()->check()
             ? auth()->user()->favoriteBooks()->whereKey($book->id)->exists()

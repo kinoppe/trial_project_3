@@ -51,7 +51,7 @@ class ReviewController extends Controller
         $bookId = $review->book_id;
 
         DB::transaction(function () use ($review) {
-            $review->likedByUsers()->detach();
+            $review->likedUsers()->detach();
             $review->delete();
         });
 

@@ -3,8 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\ReadingPlan;
 
@@ -45,7 +43,7 @@ class ReadingPlanReminder extends Notification
     {
         return match ($this->timing) {
             'three_days_before' => '読書期限が近づいています',
-            'on_due_date' => '今日は読書期限です',
+            'on_target_date' => '今日は読書期限です',
             'three_days_after' => '読書期限を過ぎています',
             default => '読書計画のお知らせ',
         };
@@ -59,7 +57,7 @@ class ReadingPlanReminder extends Notification
             'three_days_before' =>
                 "「{$bookTitle}」の読書期限まであと3日です。",
 
-            'on_due_date' =>
+            'on_target_date' =>
                 "「{$bookTitle}」の読書期限は今日です。",
 
             'three_days_after' =>

@@ -42,16 +42,36 @@ class ReadingPlanController extends Controller
         return view('reading-plans.create', compact('books'));
     }
 
-    public function store(StoreReadingPlanRequest $request): RedirectResponse {
+    public function store(StoreReadingPlanRequest $request): RedirectResponse
+    {
+        $bookId = $request->validated('book_id');
+
+        $exists = $request->user()
+            ->readingPlans()
+            ->where('book_id', $bookId)
+            ->whereIn('status', [
+                ReadingPlanStatus::Planned->value,
+                ReadingPlanStatus::Overdue->value,
+            ])
+            ->exists();
+
+        if ($exists) {
+            return back()
+                ->withErrors([
+                    'book_id' => 'この書籍はすでに読書計画に登録されています。',
+                ])
+                ->withInput();
+        }
+
         $request->user()->readingPlans()->create([
-            'book_id' => $request->validated('book_id'),
+            'book_id' => $bookId,
             'target_date' => $request->validated('target_date'),
             'status' => ReadingPlanStatus::Planned,
         ]);
 
         return redirect()
             ->route('reading-plans.index')
-            ->with('success', '読書計画を登録しました。');
+            ->with('success', '読書計画を作成しました。');
     }
 
     public function edit(ReadingPlan $readingPlan): View
@@ -86,7 +106,7 @@ class ReadingPlanController extends Controller
             'completed_at' => now(),
         ]);
 
-        return back()->with('success', '読了として記録しました。');
+        return back()->with('success', '読書計画を完了しました。');
     }
 
     public function destroy(ReadingPlan $readingPlan): RedirectResponse {

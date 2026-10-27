@@ -26,7 +26,6 @@ return new class extends Migration
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
 
-            $table->unique(['user_id', 'book_id']);
             $table->index(['user_id', 'status']);
             $table->index(['status', 'target_date']);
         });

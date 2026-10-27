@@ -14,7 +14,6 @@ class ReviewLikeSeeder extends Seeder
         $reviews = Review::orderBy('id')->get();
 
         foreach ($reviews as $index => $review) {
-            // 0、1、2、3人を順番に割り当てる
             $likeCount = $index % 4;
 
             if ($likeCount === 0) {
